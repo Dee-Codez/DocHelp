@@ -7,6 +7,9 @@ import requests
 import os
 import boto3
 from dotenv import load_dotenv
+from langchain.schema import HumanMessage, SystemMessage
+from langchain_openai import ChatOpenAI
+
 
 app = FastAPI()
 
@@ -52,8 +55,6 @@ async def upload_file(file: UploadFile = File(...)):
 
 @app.post("/ask")
 async def ask_question(question: str):
-    from langchain.schema import HumanMessage, SystemMessage
-    from langchain.chat_models import ChatOpenAI
     chat_model = ChatOpenAI(
         openai_api_key=API_KEY,
         openai_api_base="https://chat.tune.app/api/",
