@@ -24,10 +24,7 @@ const NavBar = () => {
       
     };
 
-    const handleDelete = () => {
-        console.log('delete');
-        
-    }
+
 
     const handleUpload = async () => {
         if (file) {

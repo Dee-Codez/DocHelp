@@ -118,13 +118,13 @@ const Chat = () => {
       <div className=' '>
         <div>
           <div className='pt-10'>
-            <div className='mb-10'>
+            <div className='mb-28'>
               {messageList.map((msg) => (
                 <div className='relative flex justify-between' key={msg.id}>
                   {msg.user == "bot"?(
                     <div className='flex xl:max-w-[40vw] flex-start gap-2 mt-5 lg:mr-auto'>
                       <img className='w-8 h-8' src="/chatlogo.png" />
-                      <div className='shadow-md shadow-black/20 p-2 rounded-lg '>
+                      <div className='shadow-md shadow-black/15 p-2 rounded-lg '>
                         {msg.text}
                       </div>
                     </div>
@@ -133,7 +133,7 @@ const Chat = () => {
                       <div className='flex mt-1'>
                         <FaUser className='opacity-100 lg:opacity-0' size={20}/>
                       </div>
-                      <div className='shadow-md shadow-black/20 p-2 rounded-lg'>
+                      <div className='shadow-md shadow-black/15 p-2 rounded-lg'>
                         {msg.text}
                       </div>
                       <div className='flex mt-1'>

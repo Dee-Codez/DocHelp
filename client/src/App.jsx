@@ -16,17 +16,29 @@ const App = () => {
           deleteDoc(doc(db, collectionName, document.id));
       });
     }
+    const file_name = sessionStorage.getItem("filename");
+    const response = await fetch(`http://127.0.0.1:8000/delete?file_name=${file_name}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+    sessionStorage.clear();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
 }
+
 
   return (
     <div className=''>
       <div>
-        <div className='relative flex'>
-          <div className='absolute top-0'>
+        <div className='relative flex flex-col h-screen justify-between items-center'>
+          <div className=''>
             <NavBar />
           </div>
-          <div className='absolute left-1/2 top-[30vh] transfrom -translate-x-1/2'>
-            <Chat />
+          <div className='absolute top-[20vh] pb-32 left-1/2 transform -translate-x-1/2'>
+            <Chat className="" />
           </div>
           <div className='fixed bottom-10 right-10' onClick={deleteAllData}>
             <div className='p-2 rounded-lg cursor-pointer border-2 border-gray-400'>Reset</div>
