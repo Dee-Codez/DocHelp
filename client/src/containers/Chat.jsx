@@ -47,9 +47,9 @@ const Chat = () => {
         text = formvalue
       }
       if(file_name){
-        url = `http://127.0.0.1:8000/ask?question=${encodeURIComponent(text)},file_name=${file_name}`;
+        url = `https://dochelp-backend.onrender.com/ask?question=${encodeURIComponent(text)},file_name=${file_name}`;
       }else{
-        url = `http://127.0.0.1:8000/ask?question=${encodeURIComponent(text)}`
+        url = `https://dochelp-backend.onrender.com/ask?question=${encodeURIComponent(text)}`
       }
       const response = await fetch(url, {
         method: 'POST',

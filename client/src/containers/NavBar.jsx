@@ -37,7 +37,7 @@ const NavBar = () => {
       
           try {
             // You can write the URL of your server or any other endpoint used for file upload
-            const result = await fetch("http://127.0.0.1:8000/uploadfile", {
+            const result = await fetch("https://dochelp-backend.onrender.com/uploadfile", {
               method: "POST",
               body: formData,
             });
@@ -60,7 +60,7 @@ const NavBar = () => {
 
       const clearResponse = async() => {
         const file_name = sessionStorage.getItem("filename");
-        const response = await fetch(`http://127.0.0.1:8000/delete?file_name=${file_name}`, {
+        const response = await fetch(`https://dochelp-backend.onrender.com/delete?file_name=${file_name}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
