@@ -5,20 +5,17 @@ import json
 from io import BytesIO
 import requests
 import os
-import boto3
 from dotenv import load_dotenv
 from langchain.schema import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
 load_dotenv()
-aws_access = os.environ.get("AWS_ACCESS_KEY")
-aws_secret = os.environ.get("AWS_SECRET_KEY")
 API_KEY = os.environ.get("OPEN_API_KEY")
 
-s3 = boto3.client('s3', aws_access_key_id=aws_access, aws_secret_access_key=aws_secret)
 
 @app.get("/")
 def welcome():
@@ -30,7 +27,6 @@ sysmsg = "You are a Document Guide, You take reference with uploaded documents t
 
 @app.delete("/delete")
 def delete_file(file_name: str):
-    s3.delete_object(Bucket='dochelp', Key=file_name)
     old_file = file_name
     file_name=""
     text = ""
@@ -50,8 +46,7 @@ async def upload_file(file: UploadFile = File(...)):
         sysmsg = "You are a Document Guide, You take reference with uploaded documents to answer questions. Take reference with the following text : " + text
 
     pdf_file.seek(0)
-    s3.upload_fileobj(pdf_file, 'dochelp', file.filename)
-    return {"text": text}
+    return {"filename":file.filename ,"text": text}
 
 @app.post("/ask")
 async def ask_question(question: str):
