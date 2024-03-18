@@ -34,15 +34,24 @@ const Chat = () => {
 
     const [messages] = useCollectionData(q, { idField: 'id' });
     let text = "Hi";
+    let url = ``;
 
+    let [respLoading, setRespLoading] = useState(false);
     const [formvalue, setFormValue] = useState('');
     const [messageList, setMessageList] = useState([]);
 
-    const fetchResponse = async() => {
+    const fetchResponse = async(file_name) => {
+      respLoading = true;
+      setRespLoading(respLoading);
       if(formvalue){
         text = formvalue
       }
-      const response = await fetch(`http://127.0.0.1:8000/ask?question=${encodeURIComponent(text)}`, {
+      if(file_name){
+        url = `http://127.0.0.1:8000/ask?question=${encodeURIComponent(text)},file_name=${file_name}`;
+      }else{
+        url = `http://127.0.0.1:8000/ask?question=${encodeURIComponent(text)}`
+      }
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -52,17 +61,9 @@ const Chat = () => {
       const data = await response.json();
       console.log(data);
       sendBotMessage(data.ans);
+      respLoading = false;
+      setRespLoading(respLoading);
     }
-
-    const clearResponse = async() => {
-      const response = await fetch(`http://127.0.0.1:8000`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      });
-    }
-    
 
     const sendHumanMessage = async(e) => {
         e.preventDefault();
@@ -72,6 +73,7 @@ const Chat = () => {
           user: "human"
         };
         setFormValue('');
+        fetchResponse();
         if (!formvalue) {
           console.error('Cannot add message with undefined or empty text');
           return;
@@ -98,13 +100,15 @@ const Chat = () => {
 
   let count =0;
   useEffect(() => {
+    const file_name = sessionStorage.getItem("filename");
     if(count==0){
+    if(file_name){
+      fetchResponse(file_name);
+    }else{
       fetchResponse();
-
+    }
       count++;
     }
-    
-    
   }, []);
 
 
@@ -120,7 +124,7 @@ const Chat = () => {
                   {msg.user == "bot"?(
                     <div className='flex xl:max-w-[40vw] flex-start gap-2 mt-5 lg:mr-auto'>
                       <img className='w-8 h-8' src="/chatlogo.png" />
-                      <div className=''>
+                      <div className='shadow-md shadow-black/20 p-2 rounded-lg '>
                         {msg.text}
                       </div>
                     </div>
@@ -129,7 +133,7 @@ const Chat = () => {
                       <div className='flex mt-1'>
                         <FaUser className='opacity-100 lg:opacity-0' size={20}/>
                       </div>
-                      <div className=''>
+                      <div className='shadow-md shadow-black/20 p-2 rounded-lg'>
                         {msg.text}
                       </div>
                       <div className='flex mt-1'>
@@ -139,6 +143,15 @@ const Chat = () => {
                   )}
                 </div>
               ))}
+              {respLoading && <div className='mt-6 ml-10'>
+                <div className="bg-white rounded-lg shadow-md p-4 animate-pulse">
+
+                  <div className="w-2/3 h-4 bg-gray-300 rounded mb-2"></div>
+
+                  <div className="w-1/2 h-8 bg-gray-300 rounded"></div>
+                </div>
+                </div>}
+
             </div>
           </div>
         </div>

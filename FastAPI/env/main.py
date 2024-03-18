@@ -27,6 +27,7 @@ sysmsg = "You are a Document Guide, You take reference with uploaded documents t
 
 @app.delete("/delete")
 def delete_file(file_name: str):
+    global text, sysmsg
     old_file = file_name
     file_name=""
     text = ""
@@ -49,7 +50,10 @@ async def upload_file(file: UploadFile = File(...)):
     return {"filename":file.filename ,"text": text}
 
 @app.post("/ask")
-async def ask_question(question: str):
+async def ask_question(question: str, file_name: str | None = None):
+    global sysmsg
+    if file_name is not None:
+        sysmsg = "You are a Document Guide, You take reference with uploaded documents to answer questions. You can asnwer questions related to $()".format(file_name)
     chat_model = ChatOpenAI(
         openai_api_key=API_KEY,
         openai_api_base="https://chat.tune.app/api/",

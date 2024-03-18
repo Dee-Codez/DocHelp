@@ -26,7 +26,7 @@ const NavBar = () => {
 
     const handleDelete = () => {
         console.log('delete');
-        setisFile(false);
+        
     }
 
     const handleUpload = async () => {
@@ -60,6 +60,18 @@ const NavBar = () => {
           }
         }
       };
+
+      const clearResponse = async() => {
+        const file_name = sessionStorage.getItem("filename");
+        const response = await fetch(`http://127.0.0.1:8000/delete?file_name=${file_name}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+        setisFile(false);
+        sessionStorage.clear();
+      }
     
 
     useEffect(() => {
@@ -86,7 +98,7 @@ const NavBar = () => {
                     <div className='flex'>
                         {isFile && <div className='mr-5'>
                             <div className='relative flex gap-2 mt-3 items-center hover:bg-black/30 rounded-lg p-1'>
-                                <MdDelete size={30} onClick={handleDelete}  className='absolute p-1 opacity-0 hover:opacity-100'/>
+                                <MdDelete size={30} onClick={clearResponse}  className='absolute p-1 opacity-0 hover:opacity-100'/>
                                 <IoDocumentOutline size={30} className='text-[#0fa958] border border-[#0fa958] p-1' />
                             </div>
                         </div>}
@@ -101,7 +113,7 @@ const NavBar = () => {
                     {isFile && <div className='relative cursor-pointer flex items-center justify-center'>
                         
                         <div className='flex z-10 gap-2 items-center hover:bg-black/30 rounded-lg p-1 max-w-[30vw] absolute top-3 right-8'>
-                            <MdDelete size={30} onClick={handleDelete}  className='z-20 px-8 w-full  left-1/2 transform -translate-x-1/2  absolute opacity-0 hover:opacity-100'/>
+                            <MdDelete size={30} onClick={clearResponse}  className='z-20 px-8 w-full  left-1/2 transform -translate-x-1/2  absolute opacity-0 hover:opacity-100'/>
                             <IoDocumentOutline size={30} className='text-[#0fa958] border border-[#0fa958] p-1' />
                             <div className='text-[#0fa958] text-sm truncate'>{fileName}</div>
                         </div>
