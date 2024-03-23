@@ -122,23 +122,23 @@ const Chat = () => {
               {messageList.map((msg) => (
                 <div className='relative flex justify-between' key={msg.id}>
                   {msg.user == "bot"?(
-                    <div className='flex xl:max-w-[40vw] flex-start gap-2 mt-5 lg:mr-auto'>
+                    <div className='flex xl:max-w-[90vw] gap-2 mt-7 lg:mr-auto'>
                       <img className='w-8 h-8' src="/chatlogo.png" />
-                      <div className='shadow-md shadow-black/15 p-2 rounded-lg '>
+                      <div className=' '>
                         {msg.text}
                       </div>
                     </div>
                   ) :(
-                    <div className=' xl:max-w-[40vw] flex flex-end gap-2 lg:ml-auto mt-5'>
-                      <div className='flex mt-1'>
-                        <FaUser className='opacity-100 lg:opacity-0' size={20}/>
+                    <div className=' xl:max-w-[90vw] flex gap-2 mt-7'>
+                      <div className='flex mt-1 ml-2'>
+                        <FaUser className='' size={20}/>
                       </div>
-                      <div className='shadow-md shadow-black/15 p-2 rounded-lg'>
+                      <div className='ml-1'>
                         {msg.text}
                       </div>
-                      <div className='flex mt-1'>
+                      {/* <div className='flex mt-1'>
                         <FaUser className='opacity-0 lg:opacity-100' size={20}/>
-                      </div>
+                      </div> */}
                       </div>
                   )}
                 </div>
